@@ -1,0 +1,7 @@
+channels:
+- conda-forge
+- bioconda
+dependencies:
+- pip
+- pip:
+  - quote==3.0.0 #

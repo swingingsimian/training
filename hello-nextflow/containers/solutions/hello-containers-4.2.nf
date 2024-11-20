@@ -1,5 +1,5 @@
-#!/usr/bin/env nextflow
 
+#!/usr/bin/env nextflow
 /*
  * Pipeline parameters
  */
