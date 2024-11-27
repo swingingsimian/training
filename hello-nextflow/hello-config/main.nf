@@ -5,7 +5,9 @@
  */
 
 // Primary input (file of input files, one per line)
-params.reads_bam = "${projectDir}/data/sample_bams.txt"
+// params.reads_bam = "${projectDir}/data/sample_bams.txt"
+params.reads_bam = "${projectDir}/data/sample_bams.local.txt"
+
 
 // Output directory
 params.outdir = "results_genomics"
@@ -25,6 +27,8 @@ params.cohort_name = "family_trio"
 process SAMTOOLS_INDEX {
 
     container 'community.wave.seqera.io/library/samtools:1.20--b5dfbd93de237464'
+    // This allows to run with conda virtual envs instead of docker container
+    conda "bioconda::samtools=1.20"
 
     publishDir params.outdir, mode: 'symlink'
 
@@ -46,6 +50,7 @@ process SAMTOOLS_INDEX {
 process GATK_HAPLOTYPECALLER {
 
     container "community.wave.seqera.io/library/gatk4:4.5.0.0--730ee8817e436867"
+    conda "bioconda::gatk4=4.5.0.0"
 
     publishDir params.outdir, mode: 'symlink'
 
@@ -77,6 +82,7 @@ process GATK_HAPLOTYPECALLER {
 process GATK_JOINTGENOTYPING {
 
     container "community.wave.seqera.io/library/gatk4:4.5.0.0--730ee8817e436867"
+    conda "bioconda::gatk4=4.5.0.0"
 
     publishDir params.outdir, mode: 'symlink'
 
@@ -107,6 +113,13 @@ process GATK_JOINTGENOTYPING {
         -L ${interval_list} \
         -O ${cohort_name}.joint.vcf
     """
+
+    // It seems the GenotypeGVCFs process cannot import the created DB
+    // Caused by: org.genomicsdb.exception.GenomicsDBException: Could not load genomicsdb native library
+    //    at org.genomicsdb.GenomicsDBUtilsJni.<clinit>(GenomicsDBUtilsJni.java:34)
+    //    ... 10 more
+    // Caused by: java.lang.UnsatisfiedLinkError: /private/var/folders/x5/tgs7pf7920x_p08d16q_j2_m0000gn/T/libtiledbgenomicsdb3826759826195770107.dylib: dlopen(/private/var/folders/x5/tgs7pf7920x_p08d16q_j2_m0000gn/T/libtiledbgenomicsdb3826759826195770107.dylib, 0x0001): tried: '/private/var/folders/x5/tgs7pf7920x_p08d16q_j2_m0000gn/T/libtiledbgenomicsdb3826759826195770107.dylib' (mach-o file, but is an incompatible architecture (have 'x86_64', need 'arm64e' or 'arm64')), '/System/Volumes/Preboot/Cryptexes/OS/private/var/folders/x5/tgs7pf7920x_p08d16q_j2_m0000gn/T/libtiledbgenomicsdb3826759826195770107.dylib' (no such file), '/private/var/folders/x5/tgs7pf7920x_p08d16q_j2_m0000gn/T/libtiledbgenomicsdb3826759826195770107.dylib' (mach-o file, but is an incompatible architecture (have 'x86_64', need 'arm64e' or 'arm64'))
+    // bah, it looks like the conda package does not support aarch64 :(
 }
 
 workflow {

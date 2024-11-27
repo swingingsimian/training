@@ -12,3 +12,4 @@ transcript-index
 hello-nextflow/data/bam/*bai
 hello-nextflow/results
 hello-nextflow/results_genomics
+hello-nextflow/hello-config/results_genomics
