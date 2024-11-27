@@ -9,4 +9,6 @@ nf-training/results
 transcript-index
 .vscode
 
-hello-nextflow/results/*
+hello-nextflow/data/bam/*bai
+hello-nextflow/results
+hello-nextflow/results_genomics

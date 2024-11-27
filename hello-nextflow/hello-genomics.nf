@@ -134,8 +134,14 @@ workflow {
 
 // Why has samtools suddely started failing?
 // It must have been run successfully on this machine previously
-// The platform WARNING is a red herring here?
+// The platform WARNING is a red herring here? Well not quite, it works, but there a risk of platform incompatibilies.
+// This warning is not seen in the terminal when the run is successful. However..Rosetta2 
+// https://dev.to/docker/run-x86-containers-on-apple-mac-m1-with-rosetta-2-417a
+// let's try enabling rosseta 2 virtualisation in docker desktop? This is in beta tho :/ No, in the latest version this is the default :)
+
 // The real issue is the gitpod paths? 
+// Using full local paths for now, but relative paths don't work?
+// TODO Investigate relative path support?
 
 // ERROR ~ Error executing process > 'SAMTOOLS_INDEX (1)'
 
