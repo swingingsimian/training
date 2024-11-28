@@ -16,3 +16,9 @@ hello-nextflow/hello-config/results_genomics
 hello-nextflow/hello-config/data
 hello-nextflow/hello-modules/results_genomics
 hello-nextflow/hello-modules/data
+hello-nextflow/hello-nf-test/data
+hello-nextflow/hello-nf-test/results_genomics
+hello-nextflow/hello-nf-test/.nf-test
+
+*.snap
+*.nf-test.log
